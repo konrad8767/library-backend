@@ -1,15 +1,11 @@
+using Library.API.DIRegistration;
 using Library.Infrastructure;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Library.API
 {
@@ -29,7 +25,13 @@ namespace Library.API
             //services.AddDbContext<LibraryDbContext>(x =>
             //    x.UseSqlServer(Configuration.GetConnectionString("Database"), z => z.MigrationsAssembly("Library.Infrastructure")));
             services.AddDbContext<LibraryDbContext>();
+            services.AddMediatR(typeof(Startup));
             services.AddScoped<LibrarySeeder>();
+            services.AddSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(i => i.FullName.Replace('+', '.'));
+            });
+            services.RegisterRepositories();
             services.AddAutoMapper(this.GetType().Assembly);
         }
 
@@ -49,6 +51,12 @@ namespace Library.API
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book API");
+            });
 
             app.UseRouting();
 

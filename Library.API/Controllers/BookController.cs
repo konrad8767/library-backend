@@ -1,24 +1,28 @@
 ﻿using AutoMapper;
+using Library.API.CQRS.Models;
+using Library.API.CQRS.Queries.Books;
 using Library.API.DTO;
-using Library.Domain.Entities;
 using Library.Infrastructure;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Library.API.Controllers
 {
-    [Route("api/book")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
         private readonly LibraryDbContext _dbContext;
         private readonly IMapper _mapper;
-        public BookController(LibraryDbContext dbContext, IMapper mapper)
+        private readonly IMediator _mediator;
+        public BookController(IMediator mediator)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -34,22 +38,34 @@ namespace Library.API.Controllers
             return Ok(bookDtos);
         }
 
-        [HttpGet("{bookId}")]
-        public ActionResult<BookDTO> Get([FromRoute] int bookId)
+        [HttpGet]
+        [Route("{bookId}")]
+        [ProducesResponseType(typeof(GetBookQuery.Response), 200)]
+        public async Task<IActionResult> GetAllBooks([FromRoute] int bookId, CancellationToken cancellationToken)
         {
-            var book = _dbContext
-                .Books
-                .Include(x => x.Authors)
-                .FirstOrDefault(x => x.Id == bookId);
-
-            if (book is null)
+            var request = new GetBookQuery.Request
             {
-                return NotFound();
-            }
+                BookId = bookId
+            };
 
-            var bookDto = _mapper.Map<BookDTO>(book);
+            var result = await _mediator.Send(request, cancellationToken);
 
-            return Ok(bookDto);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("Books")]
+        [ProducesResponseType(typeof(GetBooksQuery.Response), 200)]
+        public async Task<IActionResult> GetBooks([FromBody] SearchBookModel model, CancellationToken cancellationToken)
+        {
+            var request = new GetBooksQuery.Request
+            {
+                Filters = model.Filters,
+                SortingField = model.SortingField,
+                IsDesc = model.IsDesc
+            };
+            var result = await _mediator.Send(request, cancellationToken);
+            return Ok(result);
         }
     }
 }
