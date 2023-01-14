@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="CQRS\Queries\Books\" />
-    <Folder Include="DTO\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +31,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.26" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.25.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
   </ItemGroup>
 

@@ -5,16 +5,19 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace Library.API
 {
     public class LibrarySeeder
     {
         private readonly LibraryDbContext _dbContext;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public LibrarySeeder(LibraryDbContext dbContext)
+        public LibrarySeeder(LibraryDbContext dbContext, IPasswordHasher<User> passwordHasher)
         {
             _dbContext = dbContext;
+            _passwordHasher = passwordHasher;
         }
 
         public void Seed()
@@ -25,10 +28,45 @@ namespace Library.API
                 {
                     var books = GetBooks();
                     _dbContext.Books.AddRange(books);
+                    _dbContext.Users.AddRange(GetUsers());
                     _dbContext.SaveChanges();
                 }
             }
         }
+
+
+        private List<User> GetUsers()
+        {
+
+            var user = new User()
+            {
+                Login = "user",
+                Role = new Role()
+                {
+                    Name = "User"
+                },
+                EmailAddress = "user@test.pl",
+            };
+            var hashedPassword = _passwordHasher.HashPassword(user, "user");
+            user.Password = hashedPassword;
+            var admin = new User()
+            {
+                Login = "admin",
+                Role = new Role()
+                {
+                    Name = "Admin"
+                },
+                EmailAddress = "user@test.pl",
+            };
+            var adminHashedPassword = _passwordHasher.HashPassword(user, "admin");
+           admin.Password = adminHashedPassword;
+           return new List<User>()
+           {
+               admin, user
+           };
+        }
+
+
 
         private List<Book> GetBooks()
         {
