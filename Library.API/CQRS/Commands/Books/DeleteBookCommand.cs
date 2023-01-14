@@ -30,12 +30,10 @@ namespace Library.API.CQRS.Commands.Books
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IBookRepository _bookRepository;
-            private readonly IMapper _mapper;
 
-            public Handler(IBookRepository bookRepository, IMapper mapper)
+            public Handler(IBookRepository bookRepository)
             {
                 _bookRepository = bookRepository;
-                _mapper = mapper;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)

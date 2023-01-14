@@ -26,36 +26,13 @@ namespace Library.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpdatedById")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.ToTable("Authors");
                 });
@@ -66,6 +43,9 @@ namespace Library.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AuthorsId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Genres")
                         .HasColumnType("int");
@@ -86,6 +66,8 @@ namespace Library.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorsId");
 
                     b.HasIndex("UserId");
 
@@ -133,15 +115,12 @@ namespace Library.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Library.Domain.Entities.Author", b =>
-                {
-                    b.HasOne("Library.Domain.Entities.Book", null)
-                        .WithMany("Authors")
-                        .HasForeignKey("BookId");
-                });
-
             modelBuilder.Entity("Library.Domain.Entities.Book", b =>
                 {
+                    b.HasOne("Library.Domain.Entities.Author", "Authors")
+                        .WithMany()
+                        .HasForeignKey("AuthorsId");
+
                     b.HasOne("Library.Domain.Entities.User", null)
                         .WithMany("Books")
                         .HasForeignKey("UserId");

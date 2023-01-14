@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Domain.Entities
 {
-    public class Author : BaseAudit
+    public class Author
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

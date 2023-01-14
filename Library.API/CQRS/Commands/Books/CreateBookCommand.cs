@@ -34,7 +34,7 @@ namespace Library.API.CQRS.Commands.Books
                 RuleFor(x => x.Book.Title.RemoveSpecialCharacters()).MinimumLength(1)
                     .WithMessage(ValidationErrorKeys.BookTitleCannotContainOnlySpecialChars);
 
-                RuleFor(x => x.Book.Authors).NotEmpty()
+                RuleFor(x => x.Book.Author).NotEmpty()
                     .WithMessage(ValidationErrorKeys.BookMustHaveAtLeastOneAuthor);
 
                 RuleFor(x => x.Book.PublicationDate).LessThanOrEqualTo(DateTime.UtcNow)

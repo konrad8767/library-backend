@@ -39,10 +39,7 @@ namespace Library.API
                     Title = "Harry Potter and the Half-Blood Prince",
                     Genres = BookGenre.Action | BookGenre.Romance | BookGenre.Fantasy,
                     Status = BookStatus.Available,
-                    Authors = new List<Author>() {
-                        new Author() { FirstName = "J.K.", LastName = "Rowling" }, 
-                        new Author() { FirstName = "Mary", LastName = "GrandPré"}
-                    },
+                    Authors = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 1,
                     PublicationDate = new DateTime(2005, 7, 16)
                 },
@@ -51,10 +48,7 @@ namespace Library.API
                     Title = "Harry Potter and the Half-Blood Prince",
                     Genres = BookGenre.Action | BookGenre.Romance | BookGenre.Fantasy,
                     Status = BookStatus.Available,
-                    Authors = new List<Author>() {
-                        new Author() { FirstName = "J.K.", LastName = "Rowling" },
-                        new Author() { FirstName = "Mary", LastName = "GrandPré"}
-                    },
+                    Authors = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 2,
                     PublicationDate = new DateTime(2005, 7, 16)
                 },
@@ -63,10 +57,7 @@ namespace Library.API
                     Title = "Harry Potter and the Half-Blood Prince",
                     Genres = BookGenre.Action | BookGenre.Romance | BookGenre.Fantasy,
                     Status = BookStatus.Available,
-                    Authors = new List<Author>() {
-                        new Author() { FirstName = "J.K.", LastName = "Rowling" },
-                        new Author() { FirstName = "Mary", LastName = "GrandPré"}
-                    },
+                    Authors = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 3,
                     PublicationDate = new DateTime(2005, 7, 16)
                 },
@@ -75,7 +66,7 @@ namespace Library.API
                     Title = "In a Sunburned Country",
                     Genres = BookGenre.TravelLiterature,
                     Status = BookStatus.Available,
-                    Authors = new List<Author>() {new Author() { FirstName = "Bill", LastName = "Bryson" } },
+                    Authors = new Author() { FirstName = "Bill", LastName = "Bryson" },
                     Version = 1,
                     PublicationDate = new DateTime(2000, 6, 6)
                 }
