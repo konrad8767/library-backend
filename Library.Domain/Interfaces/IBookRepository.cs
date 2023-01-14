@@ -15,5 +15,9 @@ namespace Library.Domain.Interfaces
     {
         Task<Book> GetBookById(int bookId, CancellationToken cancellationToken);
         Task<ListResult<Book>> SearchBook(IList<SearchFilter> filters, BookSorting sortingField, bool isDesc, CancellationToken cancellationToken);
+        Task<bool> NotExistingBook(int bookId, CancellationToken cancellationToken);
+        Task UpdateBook(Book book, CancellationToken cancellationToken);
+        Task<int> CreateBook(Book book, CancellationToken cancellationToken);
+        Task RemoveBookById(int bookId, CancellationToken cancellationToken);
     }
 }

@@ -24,5 +24,19 @@ namespace Library.Domain.Extensions
         {
             return value.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
         }
+
+        public static string RemoveSpecialCharacters(this string str)
+        {
+            if (string.IsNullOrEmpty(str)) return str;
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if (c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
+        }
     }
 }

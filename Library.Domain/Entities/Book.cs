@@ -15,5 +15,29 @@ namespace Library.Domain.Entities
         public virtual List<Author> Authors { get; set; }
         public int Version { get; set; }
         public DateTime PublicationDate { get; set; }
+
+        public void Update(Book other)
+        {
+            Title = other.Title;
+            Genres = other.Genres;
+            Status = other.Status;
+            Authors = other.Authors;
+            Version = other.Version;
+            PublicationDate = other.PublicationDate;
+        }
+
+        public Book Borrow()
+        {
+            Status = BookStatus.Borrowed;
+
+            return this;
+        }
+
+        public Book Return()
+        {
+            Status = BookStatus.Available;
+
+            return this;
+        }
     }
 }

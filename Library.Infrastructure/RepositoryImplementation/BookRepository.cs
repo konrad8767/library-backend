@@ -29,6 +29,24 @@ namespace Library.Infrastructure.RepositoryImplementation
                 .FirstOrDefaultAsync(x => x.Id == bookId, cancellationToken);
         }
 
+        public async Task<int> CreateBook (Book book, CancellationToken cancellationToken)
+        {
+            await _dbContext.Books.AddAsync(book, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return book.Id;
+        }
+
+        public async Task RemoveBookById(int bookId, CancellationToken cancellationToken)
+        {
+            var book = await _dbContext.Books.FirstOrDefaultAsync(x => x.Id == bookId, cancellationToken);
+
+            if (book is null) return;
+
+            _dbContext.Books.Remove(book);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<ListResult<Book>> SearchBook(IList<SearchFilter> filters, BookSorting sortingField, bool isDesc, CancellationToken cancellationToken)
         {
             var query = _dbContext.Books
@@ -42,6 +60,21 @@ namespace Library.Infrastructure.RepositoryImplementation
             var count = await query.CountAsync();
 
             return new ListResult<Book>(books, count);
+        }
+
+        public async Task<bool> NotExistingBook(int bookId, CancellationToken cancellationToken)
+        {
+            var bookIdInDb = await _dbContext.Books.FirstOrDefaultAsync(x => x.Id == bookId);
+
+            if (bookIdInDb == null) return false;
+
+            return true;
+        }
+
+        public async Task UpdateBook(Book book, CancellationToken cancellationToken)
+        {
+            _dbContext.Books.Update(book);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public IQueryable<Book> ApplyBookSorting(IQueryable<Book> query, BookSorting sortingField, bool isDesc)

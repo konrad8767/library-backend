@@ -10,7 +10,7 @@ namespace Library.API.DTO
         public string Content { get; set; }
         public BookGenre Genres { get; set; }
         public BookStatus Status { get; set; }
-        public List<AuthorDTO> Author { get; set; }
+        public List<AuthorDTO> Authors { get; set; }
         public int Version { get; set; }
         public DateTime PublicationDate { get; set; }
 
