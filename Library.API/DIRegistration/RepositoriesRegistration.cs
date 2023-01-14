@@ -1,5 +1,7 @@
-﻿using Library.Domain.Interfaces;
+﻿using Library.Domain.Entities;
+using Library.Domain.Interfaces;
 using Library.Infrastructure.RepositoryImplementation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.API.DIRegistration
