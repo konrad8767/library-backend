@@ -15,7 +15,7 @@ namespace Library.API.CQRS.Commands.Users
     {
         public class Request : IRequest<Response>
         {
-            public UserDTO User { get; set; }
+            public UserRegisterDTO User { get; set; }
         }
 
         public class Response

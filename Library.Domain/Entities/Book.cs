@@ -12,7 +12,7 @@ namespace Library.Domain.Entities
         public string Title { get; set; }
         public BookGenre Genres { get; set; }
         public BookStatus Status { get; set; }
-        public virtual Author Authors { get; set; }
+        public Author Author { get; set; }
         public int Version { get; set; }
         public DateTime PublicationDate { get; set; }
         public string ImageUrl { get; set; }
@@ -22,7 +22,7 @@ namespace Library.Domain.Entities
             Title = other.Title;
             Genres = other.Genres;
             Status = other.Status;
-            Authors = other.Authors;
+            Author = other.Author;
             Version = other.Version;
             PublicationDate = other.PublicationDate;
             ImageUrl = other.ImageUrl;

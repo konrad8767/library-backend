@@ -9,7 +9,7 @@ namespace Library.Domain.Models.Sorting
         Title,
         Genres,
         Status,
-        Authors,
+        Author,
         Version,
         PublicationDate
     }

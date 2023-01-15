@@ -25,7 +25,7 @@ namespace Library.Infrastructure.RepositoryImplementation
         public async Task<Book> GetBookById(int bookId, CancellationToken cancellationToken)
         {
             return await _dbContext.Books
-                .Include(x => x.Authors)
+                .Include(x => x.Author)
                 .FirstOrDefaultAsync(x => x.Id == bookId, cancellationToken);
         }
 
@@ -50,7 +50,7 @@ namespace Library.Infrastructure.RepositoryImplementation
         public async Task<ListResult<Book>> SearchBook(IList<SearchFilter> filters, BookSorting sortingField, bool isDesc, CancellationToken cancellationToken)
         {
             var query = _dbContext.Books
-                .Include(x => x.Authors)
+                .Include(x => x.Author)
                 .Where(x => x.Id != null);
 
             query = _filterRepository.SetBookFilters(query, filters);
@@ -84,7 +84,7 @@ namespace Library.Infrastructure.RepositoryImplementation
                 BookSorting.Title => query.OrderByDescending(x => x.Title),
                 BookSorting.Genres => query.OrderByDescending(x => x.Genres),
                 BookSorting.Status => query.OrderByDescending(x => x.Status),
-                BookSorting.Authors => query.OrderByDescending(x => x.Authors),
+                BookSorting.Author => query.OrderByDescending(x => x.Author),
                 BookSorting.Version => query.OrderByDescending(x => x.Version),
                 BookSorting.PublicationDate => query.OrderByDescending(x => x.PublicationDate),
                 _ => query,
@@ -94,7 +94,7 @@ namespace Library.Infrastructure.RepositoryImplementation
                 BookSorting.Title => query.OrderBy(x => x.Title),
                 BookSorting.Genres => query.OrderBy(x => x.Genres),
                 BookSorting.Status => query.OrderBy(x => x.Status),
-                BookSorting.Authors => query.OrderBy(x => x.Authors),
+                BookSorting.Author => query.OrderBy(x => x.Author),
                 BookSorting.Version => query.OrderBy(x => x.Version),
                 BookSorting.PublicationDate => query.OrderBy(x => x.PublicationDate),
                 _ => query,

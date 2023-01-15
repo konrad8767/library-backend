@@ -46,7 +46,7 @@ namespace Library.API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(LoginUserCommand.Response), 200)]
-        public async Task<IActionResult> Login([FromBody] UserDTO user, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login([FromBody] UserLoginDTO user, CancellationToken cancellationToken)
         {
             var request = new LoginUserCommand.Request
             {
@@ -62,7 +62,7 @@ namespace Library.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateUserCommand.Response), 200)]
         [Route("createUser")]
-        public async Task<IActionResult> CreateUser([FromBody] UserDTO user, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateUser([FromBody] UserRegisterDTO user, CancellationToken cancellationToken)
         {
             var request = new CreateUserCommand.Request
             {

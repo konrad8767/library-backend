@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20230115190453_Init")]
+    [Migration("20230115191950_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,7 @@ namespace Library.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorsId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<int>("Genres")
@@ -72,7 +72,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorsId");
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("UserId");
 
@@ -122,9 +122,9 @@ namespace Library.Infrastructure.Migrations
 
             modelBuilder.Entity("Library.Domain.Entities.Book", b =>
                 {
-                    b.HasOne("Library.Domain.Entities.Author", "Authors")
+                    b.HasOne("Library.Domain.Entities.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorsId");
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("Library.Domain.Entities.User", null)
                         .WithMany("Books")

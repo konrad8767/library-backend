@@ -65,7 +65,7 @@ namespace Library.Infrastructure.Migrations
                     Title = table.Column<string>(nullable: true),
                     Genres = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    AuthorsId = table.Column<int>(nullable: true),
+                    AuthorId = table.Column<int>(nullable: true),
                     Version = table.Column<int>(nullable: false),
                     PublicationDate = table.Column<DateTime>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
@@ -75,8 +75,8 @@ namespace Library.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Books", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Books_Authors_AuthorsId",
-                        column: x => x.AuthorsId,
+                        name: "FK_Books_Authors_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -89,9 +89,9 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorsId",
+                name: "IX_Books_AuthorId",
                 table: "Books",
-                column: "AuthorsId");
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_UserId",
