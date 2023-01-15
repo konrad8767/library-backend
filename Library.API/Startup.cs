@@ -106,6 +106,7 @@ namespace Library.API
                 app.UseHsts();
             }
             app.UseCors("AllowSpecified");
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -118,7 +119,6 @@ namespace Library.API
             });
 
             app.UseRouting();
-            app.UseAuthentication();
 
             app.UseAuthorization();
 
