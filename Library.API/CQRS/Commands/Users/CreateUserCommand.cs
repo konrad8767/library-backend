@@ -5,6 +5,7 @@ using Library.API.DTO;
 using Library.Domain.Entities;
 using Library.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,18 +56,22 @@ namespace Library.API.CQRS.Commands.Users
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private IUserRepository _userRepository;
-            private IMapper _mapper;
+            private readonly IUserRepository _userRepository;
+            private readonly IPasswordHasher<User> _passwordHasher;
+            private readonly IMapper _mapper;
 
-            public Handler(IUserRepository userRepository, IMapper mapper)
+            public Handler(IUserRepository userRepository, IMapper mapper, IPasswordHasher<User> passwordHasher)
             {
                 _userRepository = userRepository;
+                _passwordHasher = passwordHasher;
                 _mapper = mapper;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var user = _mapper.Map<User>(request.User);
+                user.RoleId = 2;
+                user.Password = _passwordHasher.HashPassword(user, "user");
 
                 var result = await _userRepository.CreateUser(user, cancellationToken);
                 return new Response { Id = result };

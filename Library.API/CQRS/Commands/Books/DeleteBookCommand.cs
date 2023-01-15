@@ -16,7 +16,7 @@ namespace Library.API.CQRS.Commands.Books
 
         public class Response
         {
-
+            public bool Success { get; set; }
         }
 
         public class Validator : AbstractValidator<Request>
@@ -38,8 +38,13 @@ namespace Library.API.CQRS.Commands.Books
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
+                var isBookInDb = _bookRepository.DoestBookExist(request.Id, cancellationToken).Result;
+                if (isBookInDb == false)
+                    return new Response() { Success = false };
+
                 await _bookRepository.RemoveBookById(request.Id, cancellationToken);
-                return new Response();
+
+                return new Response() { Success = true };
             }
         }
     }

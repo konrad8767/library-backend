@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.Validators;
 using Library.API.DTO;
 using Library.Domain.Interfaces;
+using Library.Infrastructure.RepositoryImplementation;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,6 +29,16 @@ namespace Library.API.CQRS.Queries.Books
             {
                 _bookRepository = bookRepository;
                 RuleFor(x => x.BookId).GreaterThan(0).WithMessage(ValidationErrorKeys.BookIdInvalid);
+                RuleFor(x => x)
+                    .CustomAsync(BookExist);
+            }
+
+            private async Task BookExist(Request request, CustomContext customContext, CancellationToken cancellationToken)
+            {
+                var bookInDb = await _bookRepository.IsBookInDb(request.BookId, cancellationToken);
+
+                if (!bookInDb)
+                    customContext.AddFailure("BookId", ValidationErrorKeys.BookIdInvalid);
             }
         }
 

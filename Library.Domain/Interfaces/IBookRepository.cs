@@ -19,5 +19,7 @@ namespace Library.Domain.Interfaces
         Task UpdateBook(Book book, CancellationToken cancellationToken);
         Task<int> CreateBook(Book book, CancellationToken cancellationToken);
         Task RemoveBookById(int bookId, CancellationToken cancellationToken);
+        Task<bool> IsBookInDb(int bookId, CancellationToken cancellationToken);
+        Task<bool> DoestBookExist(int bookId, CancellationToken cancellationToken);
     }
 }

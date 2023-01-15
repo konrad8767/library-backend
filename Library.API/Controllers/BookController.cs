@@ -37,6 +37,11 @@ namespace Library.API.Controllers
 
             var result = await _mediator.Send(request, cancellationToken);
 
+            if (result.Book == null)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
@@ -52,6 +57,12 @@ namespace Library.API.Controllers
                 IsDesc = model.IsDesc
             };
             var result = await _mediator.Send(request, cancellationToken);
+
+            if (result.Count == 0)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
@@ -79,7 +90,13 @@ namespace Library.API.Controllers
             };
 
             var result = _mediator.Send(request, cancellationToken);
-            return Ok(result);
+
+            if (result.Result.Success == false)
+            {
+                return BadRequest(result.Result);
+            }
+
+            return Ok(result.Result);
         }
 
         [HttpPut]
@@ -94,6 +111,12 @@ namespace Library.API.Controllers
             };
 
             var result = await _mediator.Send(request, cancellationToken);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
@@ -108,6 +131,12 @@ namespace Library.API.Controllers
             };
 
             var result = await _mediator.Send(request, cancellationToken);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
@@ -122,6 +151,12 @@ namespace Library.API.Controllers
             };
 
             var result = await _mediator.Send(request, cancellationToken);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 

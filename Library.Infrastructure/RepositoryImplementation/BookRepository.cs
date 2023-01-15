@@ -71,10 +71,20 @@ namespace Library.Infrastructure.RepositoryImplementation
             return true;
         }
 
+        public async Task<bool> DoestBookExist(int bookId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Books.AnyAsync(x => x.Id == bookId, cancellationToken);
+        }
+
         public async Task UpdateBook(Book book, CancellationToken cancellationToken)
         {
             _dbContext.Books.Update(book);
             await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<bool> IsBookInDb(int bookId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Books.AnyAsync(x => x.Id == bookId);
         }
 
         public IQueryable<Book> ApplyBookSorting(IQueryable<Book> query, BookSorting sortingField, bool isDesc)

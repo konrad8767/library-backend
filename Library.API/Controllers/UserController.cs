@@ -54,7 +54,13 @@ namespace Library.API.Controllers
                 Password = user.Password
             };
 
-            var result = _mediator.Send(request, cancellationToken);
+            var result = _mediator.Send(request, cancellationToken).Result;
+
+            if (result.Token == null)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
@@ -70,6 +76,12 @@ namespace Library.API.Controllers
             };
 
             var result = _mediator.Send(request, cancellationToken);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
     }
