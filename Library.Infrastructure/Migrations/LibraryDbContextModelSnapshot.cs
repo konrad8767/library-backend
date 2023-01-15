@@ -50,6 +50,9 @@ namespace Library.Infrastructure.Migrations
                     b.Property<int>("Genres")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
 

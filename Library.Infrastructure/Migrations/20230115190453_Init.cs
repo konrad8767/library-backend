@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Library.Infrastructure.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,6 +68,7 @@ namespace Library.Infrastructure.Migrations
                     AuthorsId = table.Column<int>(nullable: true),
                     Version = table.Column<int>(nullable: false),
                     PublicationDate = table.Column<DateTime>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

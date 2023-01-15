@@ -60,10 +60,5 @@ namespace Library.Infrastructure.RepositoryImplementation
 
             return true;
         }
-
-        public async Task<LoginResponse> Authenticate(User userLogin)
-        {
-            
-        }
     }
 }

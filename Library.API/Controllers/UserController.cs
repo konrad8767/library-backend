@@ -20,6 +20,7 @@ using System.Threading;
 using Library.Domain.Interfaces;
 using Library.API.CQRS.Commands.Books;
 using MediatR;
+using System.Threading.Tasks;
 
 namespace Library.API.Controllers
 {
@@ -45,23 +46,23 @@ namespace Library.API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(LoginUserCommand.Response), 200)]
-        public async Task<IActionResult> Login([FromBody] UserDTO userLogin)
+        public async Task<IActionResult> Login([FromBody] UserDTO user, CancellationToken cancellationToken)
         {
-
-            var user = Authenticate(userLogin);
-            if (user != null)
+            var request = new LoginUserCommand.Request
             {
-                return Ok(user);
-            }
+                Login = user.Login,
+                Password = user.Password
+            };
 
-            return NotFound();
+            var result = _mediator.Send(request, cancellationToken);
+            return Ok(result);
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(CreateUserCommand.Response), 200)]
         [Route("createUser")]
-        public IActionResult CreateUser([FromBody] UserDTO user, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateUser([FromBody] UserDTO user, CancellationToken cancellationToken)
         {
             var request = new CreateUserCommand.Request
             {
