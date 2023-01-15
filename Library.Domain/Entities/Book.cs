@@ -25,6 +25,7 @@ namespace Library.Domain.Entities
             Authors = other.Authors;
             Version = other.Version;
             PublicationDate = other.PublicationDate;
+            ImageUrl = other.ImageUrl;
         }
 
         public Book Borrow()

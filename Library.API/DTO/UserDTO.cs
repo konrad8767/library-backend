@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Library.API.DTO
 {
-    public class UserLoginDTO
+    public class UserDTO
     {
-        public string Username { get; set; }
+        public string Login { get; set; }
+        public string EmailAddress { get; set; }
         public string Password { get; set; }
     }
 }

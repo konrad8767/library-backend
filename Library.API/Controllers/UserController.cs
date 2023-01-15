@@ -13,28 +13,41 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Library.API.CQRS.Queries.Books;
+using Library.API.CQRS.Commands.Users;
+using System.Net;
+using System.Threading;
+using Library.Domain.Interfaces;
+using Library.API.CQRS.Commands.Books;
+using MediatR;
 
 namespace Library.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly LibraryDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
+        private readonly IMediator _mediator;
         private readonly IPasswordHasher<User> _passwordHasher;
         public IConfiguration Configuration { get; }
 
-        public UserController(LibraryDbContext dbContext, IPasswordHasher<User> passwordHasher, IConfiguration configuration)
+        public UserController(LibraryDbContext dbContext, IPasswordHasher<User> passwordHasher, IConfiguration configuration, IUserRepository userRepository, IMediator mediator)
         {
             _passwordHasher = passwordHasher;
             _dbContext = dbContext;
             Configuration = configuration;
+            _userRepository = userRepository;
+            _mediator = mediator;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login([FromBody] UserLoginDTO userLogin)
+        [ProducesResponseType(typeof(LoginUserCommand.Response), 200)]
+        public async Task<IActionResult> Login([FromBody] UserDTO userLogin)
         {
+
             var user = Authenticate(userLogin);
             if (user != null)
             {
@@ -46,78 +59,17 @@ namespace Library.API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        [ProducesResponseType(typeof(CreateUserCommand.Response), 200)]
         [Route("createUser")]
-        public IActionResult CreateUser([FromBody] CreateUserDTO user)
+        public IActionResult CreateUser([FromBody] UserDTO user, CancellationToken cancellationToken)
         {
-            var isUserCreated = CreateNewUser(user);
-            if (isUserCreated)
+            var request = new CreateUserCommand.Request
             {
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-
-        private bool CreateNewUser(CreateUserDTO createUser)
-        {
-            var user = _dbContext.Users.FirstOrDefault(user => createUser.Username == user.Login);
-            if (user is null)
-            {
-                var newUser = new User()
-                {
-                    Role = new Role()
-                    {
-                        Name = "User"
-                    },
-                    Login = createUser.Username,
-                    Password = createUser.Password,
-                    EmailAddress = createUser.Email
-                };
-
-                if (_dbContext.Database.CanConnect())
-                {
-                    _dbContext.Users.Add(newUser);
-                    _dbContext.SaveChanges();
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private LoginResponseDTO Authenticate(UserLoginDTO userLogin)
-        {
-            var user = _dbContext.Users.Include(x => x.Role).FirstOrDefault(u => u.Login == userLogin.Username);
-            if (user is null)
-            {
-                return null;
-            }
-            if (_passwordHasher.VerifyHashedPassword(user, user.Password, userLogin.Password) == PasswordVerificationResult.Failed)
-            {
-                return null;
-            }
-
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, user.Role.Name),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                User = user
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expireDate = DateTime.Now.AddDays(15);
-            var token = new JwtSecurityToken(Configuration["Jwt:Issuer"], Configuration["Jwt:Audience"], claims, expires: expireDate,
-                signingCredentials: credentials);
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var loginResponseDto = new LoginResponseDTO()
-            {
-                Token = tokenHandler.WriteToken(token),
-                IsAdmin = user.Role.Name == "Admin"
-            };
-
-            return loginResponseDto;
+            var result = _mediator.Send(request, cancellationToken);
+            return Ok(result);
         }
     }
 }

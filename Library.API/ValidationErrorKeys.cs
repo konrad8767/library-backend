@@ -9,5 +9,7 @@
         public static readonly string VersionMustBeGreaterThanZero = "VERSION_MUST_BE_GREATER_THAN_ZERO";
         public static readonly string PublicationDateCannotBeLaterThanCurrent = "PUBLICATION_DATE_CANNOT_BE_LATER_THAN_CURRENT";
         public static readonly string BookMustHaveAtLeastOneAuthor = "BOOK_MUST_HAVE_AT_LEAST_ONE_AUTHOS";
+        public static readonly string UserLoginIsNotUnique = "USER_LOGIN_IS_NOT_UNIQUE";
+        public static readonly string EmailIsNotUnique = "EMAIL_IS_NOT_UNIQUE";
     }
 }
