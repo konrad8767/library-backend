@@ -15,6 +15,7 @@ namespace Library.Domain.Entities
         public virtual Author Authors { get; set; }
         public int Version { get; set; }
         public DateTime PublicationDate { get; set; }
+        public string ImageUrl { get; set; }
 
         public void Update(Book other)
         {

@@ -79,7 +79,8 @@ namespace Library.API
                     Status = BookStatus.Available,
                     Authors = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 1,
-                    PublicationDate = new DateTime(2005, 7, 16)
+                    PublicationDate = new DateTime(2005, 7, 16),
+                    ImageUrl = "http://universe.byu.edu/wp-content/uploads/2015/01/HP4cover.jpg"
                 },
                 new Book()
                 {
@@ -88,7 +89,8 @@ namespace Library.API
                     Status = BookStatus.Available,
                     Authors = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 2,
-                    PublicationDate = new DateTime(2005, 7, 16)
+                    PublicationDate = new DateTime(2005, 7, 16),
+                    ImageUrl = "http://universe.byu.edu/wp-content/uploads/2015/01/HP4cover.jpg"
                 },
                 new Book()
                 {
@@ -97,7 +99,8 @@ namespace Library.API
                     Status = BookStatus.Available,
                     Authors = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 3,
-                    PublicationDate = new DateTime(2005, 7, 16)
+                    PublicationDate = new DateTime(2005, 7, 16),
+                    ImageUrl = "http://universe.byu.edu/wp-content/uploads/2015/01/HP4cover.jpg"
                 },
                 new Book()
                 {
@@ -106,7 +109,8 @@ namespace Library.API
                     Status = BookStatus.Available,
                     Authors = new Author() { FirstName = "Bill", LastName = "Bryson" },
                     Version = 1,
-                    PublicationDate = new DateTime(2000, 6, 6)
+                    PublicationDate = new DateTime(2000, 6, 6),
+                    ImageUrl = "https://m.media-amazon.com/images/I/511w+m1L4fL._AC_SY1000_.jpg"
                 }
             };
 
