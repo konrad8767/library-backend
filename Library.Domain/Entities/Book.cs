@@ -12,7 +12,7 @@ namespace Library.Domain.Entities
         public string Title { get; set; }
         public BookGenre Genres { get; set; }
         public BookStatus Status { get; set; }
-        public User User { get; set; }
+        public int UserId { get; set; }
         public Author Author { get; set; }
         public int Version { get; set; }
         public DateTime PublicationDate { get; set; }
@@ -22,17 +22,17 @@ namespace Library.Domain.Entities
         {
             Title = other.Title;
             Genres = other.Genres;
-            User = other.User;
+            UserId = other.UserId;
             Author = other.Author;
             Version = other.Version;
             PublicationDate = other.PublicationDate;
             ImageUrl = other.ImageUrl;
         }
 
-        public Book Borrow(User other)
+        public Book Borrow(int userId)
         {
             Status = BookStatus.Borrowed;
-            User = other;
+            UserId = userId;
 
             return this;
         }
@@ -40,7 +40,7 @@ namespace Library.Domain.Entities
         public Book Return()
         {
             Status = BookStatus.Available;
-            User = null;
+            UserId = 0;
 
             return this;
         }

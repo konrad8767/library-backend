@@ -70,5 +70,10 @@ namespace Library.Infrastructure.RepositoryImplementation
             _dbContext.Users.Update(user);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
+        //public async Task RemoveSpectatedBook(int bookId, CancellationToken cancellationToken)
+        //{
+        //    var users = await _dbContext.Users.Where(x => x.SpectatedBookIds.Any());
+        //}
     }
 }

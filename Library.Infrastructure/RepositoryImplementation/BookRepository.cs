@@ -27,7 +27,6 @@ namespace Library.Infrastructure.RepositoryImplementation
         {
             return await _dbContext.Books
                 .Include(x => x.Author)
-                .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == bookId, cancellationToken);
         }
 
@@ -35,7 +34,6 @@ namespace Library.Infrastructure.RepositoryImplementation
         {
             return await _dbContext.Books
                 .Include(x => x.Author)
-                .Include(x => x.User)
                 .Where(x => bookIds.Contains(x.Id))
                 .ToListAsync(cancellationToken);
         }

@@ -53,10 +53,11 @@ namespace Library.API.CQRS.Commands.Books
                         Success = false
                     };
 
-                var book = _bookRepository.GetBookById(request.BookId, cancellationToken);
-                var updatedBook = book.Result.Return();
+                var book = await _bookRepository.GetBookById(request.BookId, cancellationToken);
+                var updatedBook = book.Return();
 
                 await _bookRepository.UpdateBook(updatedBook, cancellationToken);
+                //await _userRepository.RemoveSpectatedBook(book.Id, cancellationToken);
 
                 return new Response()
                 {

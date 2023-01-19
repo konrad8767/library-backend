@@ -10,7 +10,7 @@ namespace Library.API.AutoMapper.Profiles
         {
             CreateMap<Book, BookDTO>()
                 .ForMember(z => z.BookId, x => x.MapFrom(c => c.Id))
-                .ForMember(z => z.User, x => x.MapFrom(c => c.User));
+                .ForMember(z => z.UserId, x => x.MapFrom(c => c.UserId));
 
             CreateMap<BookDTO, Book>();
 

@@ -58,7 +58,7 @@ namespace Library.API.CQRS.Commands.Books
                 var book = await _bookRepository.GetBookById(request.BookId, cancellationToken);
                 var user = await _userRepository.GetUserById(request.UserId, cancellationToken);
 
-                var updatedBook = book.Borrow(user);
+                var updatedBook = book.Borrow(user.Id);
 
                 await _bookRepository.UpdateBook(updatedBook, cancellationToken);
 
