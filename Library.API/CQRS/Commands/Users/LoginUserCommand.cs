@@ -29,6 +29,7 @@ namespace Library.API.CQRS.Commands.Users
 
         public class Response
         {
+            public int UserId { get; set; }
             public string Token { get; set; }
             public bool IsAdmin { get; set; }
         }
@@ -80,6 +81,7 @@ namespace Library.API.CQRS.Commands.Users
 
                 return new Response
                 {
+                    UserId = user.Id,
                     Token = tokenHandler.WriteToken(token),
                     IsAdmin = user.Role.Name == "Admin"
                 };
