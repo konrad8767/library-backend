@@ -44,7 +44,7 @@ namespace Library.Infrastructure.RepositoryImplementation
                 return filter.Condition switch
                 {
                     Condition.Equal => query.Where(x => x.Title.ToUpper() == filter.Value.ToStrUp()),
-                    Condition.Contains => query.Where(x => EF.Functions.Like(x.Title.ToUpper(), $"%{filter.Value.ToStrUp()}")),
+                    Condition.Contains => query.Where(x => EF.Functions.Like(x.Title.ToUpper(), $"%{filter.Value.ToStrUp()}%")),
                     _ => query
                 };
 
@@ -76,12 +76,12 @@ namespace Library.Infrastructure.RepositoryImplementation
 
             if (filter.Property == FilterProperty.VERSION)
             {
-                var statuses = GetValuesList(filter.Value);
+                var versions = GetValuesList(filter.Value);
                 return filter.Condition switch
                 {
-                    Condition.Equal => query.Where(x => x.Version == Convert.ToInt32(filter.Value)),
-                    Condition.GreaterThan => query.Where(x => x.Version > Convert.ToInt32(filter.Value)),
-                    Condition.LesserThan => query.Where(x => x.Version < Convert.ToInt32(filter.Value)),
+                    Condition.Equal => query.Where(x => x.Version == versions.FirstOrDefault()),
+                    Condition.GreaterThan => query.Where(x => x.Version > versions.FirstOrDefault()),
+                    Condition.LesserThan => query.Where(x => x.Version < versions.FirstOrDefault()),
                     _ => query
                 };
             }
