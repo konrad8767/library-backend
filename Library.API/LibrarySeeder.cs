@@ -50,7 +50,7 @@ namespace Library.API
                     Name = "User"
                 },
                 EmailAddress = "user@test.pl",
-                SpectatedBookIds = "1,2,3"
+                SpectatedBookIds = "",
             };
             var hashedPassword = _passwordHasher.HashPassword(user, "user");
             user.Password = hashedPassword;
