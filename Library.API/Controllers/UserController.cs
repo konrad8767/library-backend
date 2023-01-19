@@ -54,7 +54,7 @@ namespace Library.API.Controllers
                 Password = user.Password
             };
 
-            var result = _mediator.Send(request, cancellationToken).Result;
+            var result = await _mediator.Send(request, cancellationToken);
 
             if (result.Token == null)
             {
@@ -75,7 +75,7 @@ namespace Library.API.Controllers
                 User = user
             };
 
-            var result = _mediator.Send(request, cancellationToken);
+            var result = await _mediator.Send(request, cancellationToken);
 
             if (!ModelState.IsValid)
             {

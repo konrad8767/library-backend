@@ -7,7 +7,7 @@ namespace Library.Infrastructure
     public class LibraryDbContext : DbContext
     {
         private string _connectionString =
-            "Server=PKONDZIK;Database=LibraryDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+            "Server=(localdb)\\mssqllocaldb;Database=LibraryDb;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
