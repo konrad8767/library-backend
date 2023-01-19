@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Library.Infrastructure.RepositoryImplementation;
 using System.Linq;
 using System;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Library.API.CQRS.Queries.Books
 {
@@ -62,7 +63,17 @@ namespace Library.API.CQRS.Queries.Books
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetUserById(request.UserId, cancellationToken);
+                
+                if (user.SpectatedBookIds.IsNullOrEmpty())
+                    return new Response();
+
                 var bookIds = user.SpectatedBookIds?.Split(',')?.Select(Int32.Parse)?.ToList();
+                
+                if (bookIds.IsNullOrEmpty())
+                {
+                    return new Response();
+                }
+
                 var result = await _bookRepository.GetBooksByIds(bookIds, cancellationToken);
                 var count = result.Count();
 
