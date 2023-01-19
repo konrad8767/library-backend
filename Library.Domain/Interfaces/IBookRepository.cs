@@ -14,6 +14,7 @@ namespace Library.Domain.Interfaces
     public interface IBookRepository
     {
         Task<Book> GetBookById(int bookId, CancellationToken cancellationToken);
+        Task<List<Book>> GetBooksByIds(List<int> bookIds, CancellationToken cancellationToken);
         Task<ListResult<Book>> SearchBook(IList<SearchFilter> filters, BookSorting sortingField, bool isDesc, CancellationToken cancellationToken);
         Task<bool> NotExistingBook(int bookId, CancellationToken cancellationToken);
         Task UpdateBook(Book book, CancellationToken cancellationToken);

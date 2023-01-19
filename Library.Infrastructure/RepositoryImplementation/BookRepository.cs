@@ -4,6 +4,7 @@ using Library.Domain.Models;
 using Library.Domain.Models.Filters;
 using Library.Domain.Models.Sorting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,7 +27,17 @@ namespace Library.Infrastructure.RepositoryImplementation
         {
             return await _dbContext.Books
                 .Include(x => x.Author)
+                .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == bookId, cancellationToken);
+        }
+
+        public async Task <List<Book>> GetBooksByIds(List<int> bookIds, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Books
+                .Include(x => x.Author)
+                .Include(x => x.User)
+                .Where(x => bookIds.Contains(x.Id))
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<int> CreateBook (Book book, CancellationToken cancellationToken)

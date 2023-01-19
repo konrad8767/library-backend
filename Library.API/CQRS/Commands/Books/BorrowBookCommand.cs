@@ -12,6 +12,7 @@ namespace Library.API.CQRS.Commands.Books
         public class Request : IRequest<Response>
         {
             public int BookId { get; set; }
+            public int UserId { get; set; }
         }
 
         public class Response
@@ -22,25 +23,25 @@ namespace Library.API.CQRS.Commands.Books
 
         public class Validator : AbstractValidator<Request>
         {
-            private readonly IBookRepository _bookRepository;
-            public Validator(IBookRepository bookRepository)
+            public Validator()
             {
-                _bookRepository = bookRepository;
-
-                RuleFor(x => x.BookId)
-                    .GreaterThan(0)
+                RuleFor(x => x.BookId).GreaterThan(0)
                     .WithMessage(ValidationErrorKeys.BookIdInvalid);
+                RuleFor(x => x.UserId).GreaterThan(0)
+                    .WithMessage(ValidationErrorKeys.UserIdInvalid);
             }
         }
 
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IBookRepository _bookRepository;
+            private readonly IUserRepository _userRepository;
             //private INotificationRepostiory _notificationRepository;
 
-            public Handler(IBookRepository bookRepository)
+            public Handler(IBookRepository bookRepository, IUserRepository userRepository)
             {
                 _bookRepository = bookRepository;
+                _userRepository = userRepository;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
@@ -54,8 +55,10 @@ namespace Library.API.CQRS.Commands.Books
                         Success = false
                     };
 
-                var book = _bookRepository.GetBookById(request.BookId, cancellationToken);
-                var updatedBook = book.Result.Borrow();
+                var book = await _bookRepository.GetBookById(request.BookId, cancellationToken);
+                var user = await _userRepository.GetUserById(request.UserId, cancellationToken);
+
+                var updatedBook = book.Borrow(user);
 
                 await _bookRepository.UpdateBook(updatedBook, cancellationToken);
 

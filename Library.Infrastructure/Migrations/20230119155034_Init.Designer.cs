@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20230119084941_Init")]
+    [Migration("20230119155034_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,9 @@ namespace Library.Infrastructure.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SpectatedBookIds")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
@@ -126,8 +129,8 @@ namespace Library.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Library.Domain.Entities.User", null)
-                        .WithMany("Books")
+                    b.HasOne("Library.Domain.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Generic;
 using Library.Infrastructure.RepositoryImplementation;
+using System.Linq;
+using System;
 
 namespace Library.API.CQRS.Queries.Books
 {
@@ -20,7 +22,7 @@ namespace Library.API.CQRS.Queries.Books
 
         public class Response
         {
-            public List<BookDTO> Books { get; set; }
+            public List<MyBookDTO> Books { get; set; }
             public int Count { get; set; }
         }
 
@@ -60,15 +62,16 @@ namespace Library.API.CQRS.Queries.Books
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var user = await _userRepository.GetUserById(request.UserId, cancellationToken);
-                var result = user.Books;
-                var count = result.Count;
+                var bookIds = user.SpectatedBookIds?.Split(',')?.Select(Int32.Parse)?.ToList();
+                var result = await _bookRepository.GetBooksByIds(bookIds, cancellationToken);
+                var count = result.Count();
 
                 if (result is null)
                     return new Response();
 
                 return new Response
                 {
-                    Books = _mapper.Map<List<BookDTO>>(result),
+                    Books = _mapper.Map<List<MyBookDTO>>(result),
                     Count = count
                 };
             }

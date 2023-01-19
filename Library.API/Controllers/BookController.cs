@@ -58,11 +58,6 @@ namespace Library.API.Controllers
             };
             var result = await _mediator.Send(request, cancellationToken);
 
-            if (result.Count == 0)
-            {
-                return BadRequest(result);
-            }
-
             return Ok(result);
         }
 
@@ -76,11 +71,6 @@ namespace Library.API.Controllers
                 UserId = userId
             };
             var result = await _mediator.Send(request, cancellationToken);
-
-            if (result.Count == 0)
-            {
-                return BadRequest(result);
-            }
 
             return Ok(result);
         }

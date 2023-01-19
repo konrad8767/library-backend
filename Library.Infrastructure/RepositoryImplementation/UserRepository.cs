@@ -35,7 +35,6 @@ namespace Library.Infrastructure.RepositoryImplementation
         {
             return await _dbContext.Users
                 .Include(x => x.Role)
-                .Include(x => x.Books)
                 .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
 

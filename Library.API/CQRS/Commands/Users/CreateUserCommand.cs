@@ -74,7 +74,7 @@ namespace Library.API.CQRS.Commands.Users
                 var user = _mapper.Map<User>(request.User);
                 user.RoleId = 2;
                 user.Password = _passwordHasher.HashPassword(user, user.Password);
-                user.Books = new List<Book>();
+                user.SpectatedBookIds = "";
 
                 var result = await _userRepository.CreateUser(user, cancellationToken);
                 return new Response { Id = result };

@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace Library.API
 {
@@ -26,10 +27,13 @@ namespace Library.API
             {
                 if (!_dbContext.Books.Any())
                 {
+                    var users = GetUsers();
+                    _dbContext.Users.AddRange(users);
+                    _dbContext.SaveChanges();
+
                     var books = GetBooks();
                     _dbContext.Books.AddRange(books);
-                    _dbContext.Users.AddRange(GetUsers());
-                    _dbContext.SaveChanges();
+                    _dbContext.SaveChanges(); 
                 }
             }
         }
@@ -46,19 +50,7 @@ namespace Library.API
                     Name = "User"
                 },
                 EmailAddress = "user@test.pl",
-                Books = new List<Book>()
-                {
-                    new Book()
-                    {
-                        Title = "Władca Pierścieni",
-                        Genres = BookGenre.Fantasy | BookGenre.Action,
-                        Status = BookStatus.Available,
-                        Author = new Author() { FirstName = "J.R.R.", LastName = "Tolkien" },
-                        Version = 2,
-                        PublicationDate = new DateTime(1954, 7, 29),
-                        ImageUrl = "https://ecsmedia.pl/c/14702679941213326-jpg-gallery.big-iext41561989.jpg"
-                    },
-                }
+                SpectatedBookIds = "1,2,3"
             };
             var hashedPassword = _passwordHasher.HashPassword(user, "user");
             user.Password = hashedPassword;
@@ -70,6 +62,7 @@ namespace Library.API
                     Name = "Admin"
                 },
                 EmailAddress = "user@test.pl",
+                SpectatedBookIds = "",
             };
             var adminHashedPassword = _passwordHasher.HashPassword(user, "admin");
             admin.Password = adminHashedPassword;
@@ -90,20 +83,22 @@ namespace Library.API
                     Title = "Władca Pierścieni",
                     Genres = BookGenre.Fantasy | BookGenre.Action,
                     Status = BookStatus.Available,
+                    User = _dbContext.Users.FirstOrDefault(x => x.Login == "user"),
                     Author = new Author() { FirstName = "J.R.R.", LastName = "Tolkien" },
                     Version = 1,
                     PublicationDate = new DateTime(1954, 7, 29),
-                    ImageUrl = "https://ecsmedia.pl/c/14702679941213326-jpg-gallery.big-iext41561989.jpg"
+                    ImageUrl = "https://ecsmedia.pl/c/14702679941213326-jpg-gallery.big-iext41561989.jpg",
                 },
                 new Book()
                 {
                     Title = "Harry Potter i Książę Półkrwi",
                     Genres = BookGenre.Action | BookGenre.Romance | BookGenre.Fantasy,
                     Status = BookStatus.Available,
+                    User = _dbContext.Users.FirstOrDefault(x => x.Login == "user"),
                     Author = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 1,
                     PublicationDate = new DateTime(2005, 7, 16),
-                    ImageUrl = "https://image.ceneostatic.pl/data/products/47839675/i-harry-potter-i-ksiaze-polkrwi-tom-6.jpg"
+                    ImageUrl = "https://image.ceneostatic.pl/data/products/47839675/i-harry-potter-i-ksiaze-polkrwi-tom-6.jpg",
                 },
                 new Book()
                 {
@@ -113,7 +108,7 @@ namespace Library.API
                     Author = new Author() { FirstName = "Janusz", LastName = "Korczak" },
                     Version = 1,
                     PublicationDate = new DateTime(1922, 1, 1),
-                    ImageUrl = "https://fwcdn.pl/fpo/65/38/456538/7195878.3.jpg"
+                    ImageUrl = "https://fwcdn.pl/fpo/65/38/456538/7195878.3.jpg",
                 },
                 new Book()
                 {

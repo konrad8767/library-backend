@@ -111,6 +111,9 @@ namespace Library.Infrastructure.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SpectatedBookIds")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
@@ -124,8 +127,8 @@ namespace Library.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Library.Domain.Entities.User", null)
-                        .WithMany("Books")
+                    b.HasOne("Library.Domain.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

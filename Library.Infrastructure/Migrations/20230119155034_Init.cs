@@ -43,7 +43,8 @@ namespace Library.Infrastructure.Migrations
                     Login = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    RoleId = table.Column<int>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false),
+                    SpectatedBookIds = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,11 +66,11 @@ namespace Library.Infrastructure.Migrations
                     Title = table.Column<string>(nullable: true),
                     Genres = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: true),
                     AuthorId = table.Column<int>(nullable: true),
                     Version = table.Column<int>(nullable: false),
                     PublicationDate = table.Column<DateTime>(nullable: false),
-                    ImageUrl = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
+                    ImageUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

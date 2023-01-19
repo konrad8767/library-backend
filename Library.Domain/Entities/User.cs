@@ -14,8 +14,8 @@ namespace Library.Domain.Entities
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public int RoleId { get; set; }
+        public string SpectatedBookIds { get; set; }
 
-        public virtual List<Book> Books { get; set; }
         public virtual Role Role { get; set; }
     }
 }
