@@ -75,7 +75,7 @@ namespace Library.API.Controllers
                 Book = book
             };
 
-            var result = _mediator.Send(request, cancellationToken);
+            var result = await _mediator.Send(request, cancellationToken);
             return Ok(result);
         }
 
@@ -89,14 +89,14 @@ namespace Library.API.Controllers
                 Id = bookId
             };
 
-            var result = _mediator.Send(request, cancellationToken);
+            var result = await _mediator.Send(request, cancellationToken);
 
-            if (result.Result.Success == false)
+            if (result.Success == false)
             {
-                return BadRequest(result.Result);
+                return BadRequest(result);
             }
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPut]
