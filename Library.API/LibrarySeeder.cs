@@ -22,9 +22,9 @@ namespace Library.API
 
         public void Seed()
         {
-            if(_dbContext.Database.CanConnect())
+            if (_dbContext.Database.CanConnect())
             {
-                if(!_dbContext.Books.Any())
+                if (!_dbContext.Books.Any())
                 {
                     var books = GetBooks();
                     _dbContext.Books.AddRange(books);
@@ -59,8 +59,8 @@ namespace Library.API
                 EmailAddress = "user@test.pl",
             };
             var adminHashedPassword = _passwordHasher.HashPassword(user, "admin");
-           admin.Password = adminHashedPassword;
-           return new List<User>()
+            admin.Password = adminHashedPassword;
+            return new List<User>()
            {
                admin, user
            };
@@ -74,43 +74,43 @@ namespace Library.API
             {
                 new Book()
                 {
-                    Title = "Harry Potter and the Half-Blood Prince",
+                    Title = "Władca Pierścieni",
+                    Genres = BookGenre.Fantasy | BookGenre.Action,
+                    Status = BookStatus.Available,
+                    Author = new Author() { FirstName = "J.R.R.", LastName = "Tolkien" },
+                    Version = 1,
+                    PublicationDate = new DateTime(1954, 7, 29),
+                    ImageUrl = "https://ecsmedia.pl/c/14702679941213326-jpg-gallery.big-iext41561989.jpg"
+                },
+                new Book()
+                {
+                    Title = "Harry Potter i Książę Półkrwi",
                     Genres = BookGenre.Action | BookGenre.Romance | BookGenre.Fantasy,
                     Status = BookStatus.Available,
                     Author = new Author() { FirstName = "J.K.", LastName = "Rowling" },
                     Version = 1,
                     PublicationDate = new DateTime(2005, 7, 16),
-                    ImageUrl = "http://universe.byu.edu/wp-content/uploads/2015/01/HP4cover.jpg"
+                    ImageUrl = "https://image.ceneostatic.pl/data/products/47839675/i-harry-potter-i-ksiaze-polkrwi-tom-6.jpg"
                 },
                 new Book()
                 {
-                    Title = "Harry Potter and the Half-Blood Prince",
-                    Genres = BookGenre.Action | BookGenre.Romance | BookGenre.Fantasy,
+                    Title = "Król Maciuś Pierwszy",
+                    Genres = BookGenre.TravelLiterature | BookGenre.Fantasy,
                     Status = BookStatus.Available,
-                    Author = new Author() { FirstName = "J.K.", LastName = "Rowling" },
-                    Version = 2,
-                    PublicationDate = new DateTime(2005, 7, 16),
-                    ImageUrl = "http://universe.byu.edu/wp-content/uploads/2015/01/HP4cover.jpg"
-                },
-                new Book()
-                {
-                    Title = "Harry Potter and the Half-Blood Prince",
-                    Genres = BookGenre.Action | BookGenre.Romance | BookGenre.Fantasy,
-                    Status = BookStatus.Available,
-                    Author = new Author() { FirstName = "J.K.", LastName = "Rowling" },
-                    Version = 3,
-                    PublicationDate = new DateTime(2005, 7, 16),
-                    ImageUrl = "http://universe.byu.edu/wp-content/uploads/2015/01/HP4cover.jpg"
-                },
-                new Book()
-                {
-                    Title = "In a Sunburned Country",
-                    Genres = BookGenre.TravelLiterature,
-                    Status = BookStatus.Available,
-                    Author = new Author() { FirstName = "Bill", LastName = "Bryson" },
+                    Author = new Author() { FirstName = "Janusz", LastName = "Korczak" },
                     Version = 1,
-                    PublicationDate = new DateTime(2000, 6, 6),
-                    ImageUrl = "https://m.media-amazon.com/images/I/511w+m1L4fL._AC_SY1000_.jpg"
+                    PublicationDate = new DateTime(1922, 1, 1),
+                    ImageUrl = "https://fwcdn.pl/fpo/65/38/456538/7195878.3.jpg"
+                },
+                new Book()
+                {
+                    Title = "Lalka",
+                    Genres = BookGenre.TravelLiterature | BookGenre.Romance,
+                    Status = BookStatus.Available,
+                    Author = new Author() { FirstName = "Bolesław", LastName = "Prus" },
+                    Version = 1,
+                    PublicationDate = new DateTime(1889, 1, 1),
+                    ImageUrl = "https://image.ceneostatic.pl/data/products/50089449/i-lalka.jpg"
                 }
             };
 
