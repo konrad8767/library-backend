@@ -130,13 +130,14 @@ namespace Library.API.Controllers
         }
 
         [HttpPut]
-        [Route("borrow/{bookId}")]
+        [Route("borrow")]
         [ProducesResponseType(typeof(BorrowBookCommand.Response), 200)]
-        public async Task<IActionResult> BorrowBookById([FromRoute] int bookId, CancellationToken cancellationToken)
+        public async Task<IActionResult> BorrowBookById([FromBody] BorrowBookCommand.Request incomingRequest, CancellationToken cancellationToken)
         {
             var request = new BorrowBookCommand.Request
             {
-                BookId = bookId
+                BookId = incomingRequest.BookId,
+                UserId = incomingRequest.UserId
             };
 
             var result = await _mediator.Send(request, cancellationToken);
@@ -150,13 +151,34 @@ namespace Library.API.Controllers
         }
 
         [HttpPut]
-        [Route("return/{bookId}")]
+        [Route("return")]
         [ProducesResponseType(typeof(ReturnBookCommand.Response), 200)]
-        public async Task<IActionResult> ReturnBookById([FromRoute] int bookId, CancellationToken cancellationToken)
+        public async Task<IActionResult> ReturnBookById([FromBody] ReturnBookCommand.Request incomingRequest, CancellationToken cancellationToken)
         {
             var request = new ReturnBookCommand.Request
             {
-                BookId = bookId
+                BookId = incomingRequest.BookId
+            };
+
+            var result = await _mediator.Send(request, cancellationToken);
+
+            if (result.Success == false)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("spectate")]
+        [ProducesResponseType(typeof(SpectateBookCommand.Response), 200)]
+        public async Task<IActionResult> SpectateBookById([FromBody] SpectateBookCommand.Request incomingRequest, CancellationToken cancellationToken)
+        {
+            var request = new SpectateBookCommand.Request
+            {
+                BookId = incomingRequest.BookId,
+                UserId = incomingRequest.UserId
             };
 
             var result = await _mediator.Send(request, cancellationToken);

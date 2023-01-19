@@ -63,7 +63,12 @@ namespace Library.Infrastructure.RepositoryImplementation
         public async Task<bool> IsUserInDb(int userId, CancellationToken cancellationToken)
         {
             return await _dbContext.Users.AnyAsync(x => x.Id == userId, cancellationToken);
+        }
 
+        public async Task UpdateUser(User user, CancellationToken cancellationToken)
+        {
+            _dbContext.Users.Update(user);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
