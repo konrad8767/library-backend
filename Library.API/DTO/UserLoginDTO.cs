@@ -7,6 +7,7 @@ namespace Library.API.DTO
 {
     public class UserLoginDTO
     {
+        public int? UserId { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
     }

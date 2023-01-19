@@ -6,6 +6,7 @@ using Library.Domain.Entities;
 using Library.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,6 +74,7 @@ namespace Library.API.CQRS.Commands.Users
                 var user = _mapper.Map<User>(request.User);
                 user.RoleId = 2;
                 user.Password = _passwordHasher.HashPassword(user, user.Password);
+                user.Books = new List<Book>();
 
                 var result = await _userRepository.CreateUser(user, cancellationToken);
                 return new Response { Id = result };

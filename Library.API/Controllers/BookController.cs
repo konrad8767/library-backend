@@ -66,6 +66,25 @@ namespace Library.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("MyBooks/{userId}")]
+        [ProducesResponseType(typeof(GetMyBooksQuery.Response), 200)]
+        public async Task<IActionResult> GetMyBooks([FromRoute] int userId, CancellationToken cancellationToken)
+        {
+            var request = new GetMyBooksQuery.Request
+            {
+                UserId = userId
+            };
+            var result = await _mediator.Send(request, cancellationToken);
+
+            if (result.Count == 0)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(CreateBookCommand.Response), 200)]
         public async Task<IActionResult> CreateBook([FromBody] BookDTO book, CancellationToken cancellationToken)

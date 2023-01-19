@@ -1,15 +1,7 @@
 ﻿using Library.Domain.Entities;
 using Library.Domain.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,6 +31,13 @@ namespace Library.Infrastructure.RepositoryImplementation
                 .FirstOrDefaultAsync(x => x.Login == login, cancellationToken);
         }
 
+        public async Task<User> GetUserById(int userId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users
+                .Include(x => x.Role)
+                .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+        }
+
         public async Task<bool> IsUserLoginUnique(string login, CancellationToken cancellationToken)
         {
             var result = await _dbContext.Users
@@ -59,6 +58,12 @@ namespace Library.Infrastructure.RepositoryImplementation
                 return false;
 
             return true;
+        }
+
+        public async Task<bool> IsUserInDb(int userId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users.AnyAsync(x => x.Id == userId, cancellationToken);
+
         }
     }
 }

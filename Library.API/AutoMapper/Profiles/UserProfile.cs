@@ -12,7 +12,9 @@ namespace Library.API.AutoMapper.Profiles
                 .ReverseMap();
 
             CreateMap<User, UserLoginDTO>()
-                .ReverseMap();
+                .ForMember(z => z.UserId, x => x.MapFrom(c => c.Id));
+
+            CreateMap<UserLoginDTO, User>();
         }
     }
 }

@@ -46,6 +46,19 @@ namespace Library.API
                     Name = "User"
                 },
                 EmailAddress = "user@test.pl",
+                Books = new List<Book>()
+                {
+                    new Book()
+                    {
+                        Title = "Władca Pierścieni",
+                        Genres = BookGenre.Fantasy | BookGenre.Action,
+                        Status = BookStatus.Available,
+                        Author = new Author() { FirstName = "J.R.R.", LastName = "Tolkien" },
+                        Version = 2,
+                        PublicationDate = new DateTime(1954, 7, 29),
+                        ImageUrl = "https://ecsmedia.pl/c/14702679941213326-jpg-gallery.big-iext41561989.jpg"
+                    },
+                }
             };
             var hashedPassword = _passwordHasher.HashPassword(user, "user");
             user.Password = hashedPassword;
