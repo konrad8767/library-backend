@@ -112,7 +112,7 @@ namespace Library.API.Controllers
 
             var result = await _mediator.Send(request, cancellationToken);
 
-            if (!ModelState.IsValid)
+            if (result.Book is null)
             {
                 return BadRequest(result);
             }
@@ -132,7 +132,7 @@ namespace Library.API.Controllers
 
             var result = await _mediator.Send(request, cancellationToken);
 
-            if (!ModelState.IsValid)
+            if (result.Success == false)
             {
                 return BadRequest(result);
             }
@@ -152,7 +152,7 @@ namespace Library.API.Controllers
 
             var result = await _mediator.Send(request, cancellationToken);
 
-            if (!ModelState.IsValid)
+            if (result.Success == false)
             {
                 return BadRequest(result);
             }

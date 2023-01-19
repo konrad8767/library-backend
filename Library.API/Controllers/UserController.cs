@@ -77,7 +77,7 @@ namespace Library.API.Controllers
 
             var result = await _mediator.Send(request, cancellationToken);
 
-            if (!ModelState.IsValid)
+            if (result.Id == null)
             {
                 return BadRequest(result);
             }

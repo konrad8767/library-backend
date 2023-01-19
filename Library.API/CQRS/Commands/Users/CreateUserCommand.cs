@@ -34,7 +34,8 @@ namespace Library.API.CQRS.Commands.Users
 
                 RuleFor(x => x)
                     .CustomAsync(LoginIsUnique)
-                    .CustomAsync(EmailIsUnique);
+                    .CustomAsync(EmailIsUnique)
+                    .Cascade(CascadeMode.Stop);
             }
 
             private async Task LoginIsUnique(Request request, CustomContext customContext, CancellationToken cancellationToken)

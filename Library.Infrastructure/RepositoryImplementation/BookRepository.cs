@@ -51,7 +51,7 @@ namespace Library.Infrastructure.RepositoryImplementation
         {
             var query = _dbContext.Books
                 .Include(x => x.Author)
-                .Where(x => x.Id != null);
+                .Where(x => x.Id > 0);
 
             query = _filterRepository.SetBookFilters(query, filters);
             query = ApplyBookSorting(query, sortingField, isDesc);

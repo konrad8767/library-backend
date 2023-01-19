@@ -9,7 +9,9 @@ namespace Library.API.AutoMapper.Profiles
         public BookProfile()
         {
             CreateMap<Book, BookDTO>()
-                .ReverseMap();
+                .ForMember(z => z.BookId, x => x.MapFrom(c => c.Id));
+
+            CreateMap<BookDTO, Book>();
         }
     }
 }
