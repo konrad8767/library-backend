@@ -1,6 +1,7 @@
 ﻿using Library.Domain.Entities;
 using Library.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -71,9 +72,24 @@ namespace Library.Infrastructure.RepositoryImplementation
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        //public async Task RemoveSpectatedBook(int bookId, CancellationToken cancellationToken)
-        //{
-        //    var users = await _dbContext.Users.Where(x => x.SpectatedBookIds.Any());
-        //}
+        public async Task UpdateUsers(List<User> users, CancellationToken cancellationToken)
+        {
+            _dbContext.Users.UpdateRange(users);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<List<User>> GetUsersByIds(List<int> userIds, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users
+                .Where(x => userIds.Contains(x.Id))
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<User>> GetSpectatorsByBookId(int bookId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users
+                .Where(x => x.SpectatedBookIds.Contains(bookId.ToString()))
+                .ToListAsync(cancellationToken);
+        }
     }
 }

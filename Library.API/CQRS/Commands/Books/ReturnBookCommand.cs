@@ -3,6 +3,7 @@ using Library.Domain.Interfaces;
 using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace Library.API.CQRS.Commands.Books
 {
@@ -35,11 +36,13 @@ namespace Library.API.CQRS.Commands.Books
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IBookRepository _bookRepository;
+            private readonly IUserRepository _userRepository;
             //private INotificationRepostiory _notificationRepository;
 
-            public Handler(IBookRepository bookRepository)
+            public Handler(IBookRepository bookRepository, IUserRepository userRepository)
             {
                 _bookRepository = bookRepository;
+                _userRepository = userRepository;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
@@ -56,8 +59,17 @@ namespace Library.API.CQRS.Commands.Books
                 var book = await _bookRepository.GetBookById(request.BookId, cancellationToken);
                 var updatedBook = book.Return();
 
+                var bookSpectators = await _userRepository.GetSpectatorsByBookId(book.Id, cancellationToken);
+
+                foreach (var spectator in bookSpectators)
+                {
+                    if (spectator.SpectatedBookIds.Split(',').Length == 1)
+                        spectator.SpectatedBookIds = "";
+                    spectator.SpectatedBookIds = Regex.Replace(spectator.SpectatedBookIds, $"^({book.Id}),|,({book.Id}),|,({book.Id})$", "");
+                }
+
                 await _bookRepository.UpdateBook(updatedBook, cancellationToken);
-                //await _userRepository.RemoveSpectatedBook(book.Id, cancellationToken);
+                await _userRepository.UpdateUsers(bookSpectators, cancellationToken);
 
                 return new Response()
                 {

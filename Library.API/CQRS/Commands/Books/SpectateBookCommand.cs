@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using Microsoft.IdentityModel.Tokens;
+using Library.Domain.Entities;
 
 namespace Library.API.CQRS.Commands.Books
 {
@@ -57,18 +58,34 @@ namespace Library.API.CQRS.Commands.Books
                     };
 
                 var book = await _bookRepository.GetBookById(request.BookId, cancellationToken);
+
+                if (book.Status != BookStatus.Borrowed)
+                    return new Response()
+                    {
+                        BookId = request.BookId,
+                        Success = false
+                    };
+
                 var user = await _userRepository.GetUserById(request.UserId, cancellationToken);
 
                 var userSpectatedBookIds = user.SpectatedBookIds;
 
-
                 if (userSpectatedBookIds.IsNullOrEmpty())
                     userSpectatedBookIds = book.Id.ToString();
                 else
+                {
+                    if (userSpectatedBookIds.Contains(book.Id.ToString()))
+                    {
+                        return new Response()
+                        {
+                            BookId = request.BookId,
+                            Success = false
+                        };
+                    }
                     userSpectatedBookIds += "," + book.Id.ToString();
+                }
                 
                 user.SpectatedBookIds = userSpectatedBookIds;
-
                 await _userRepository.UpdateUser(user, cancellationToken);
 
                 return new Response()
