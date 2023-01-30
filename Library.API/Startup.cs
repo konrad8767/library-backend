@@ -54,6 +54,7 @@ namespace Library.API
             });
             services.AddMvc();
             services.AddControllers();
+            services.AddHttpContextAccessor();
             //services.AddDbContext<LibraryDbContext>(x =>
             //    x.UseSqlServer(Configuration.GetConnectionString("Database"), z => z.MigrationsAssembly("Library.Infrastructure")));
             services.AddDbContext<LibraryDbContext>();
@@ -129,6 +130,9 @@ namespace Library.API
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            using var scope = app.ApplicationServices.CreateScope();
+            using var context = scope.ServiceProvider.GetService<LibraryDbContext>();
         }
     }
 }

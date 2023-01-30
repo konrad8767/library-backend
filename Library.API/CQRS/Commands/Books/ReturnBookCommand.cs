@@ -4,6 +4,7 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Text.RegularExpressions;
+using Library.Infrastructure.RepositoryImplementation;
 
 namespace Library.API.CQRS.Commands.Books
 {
@@ -37,12 +38,13 @@ namespace Library.API.CQRS.Commands.Books
         {
             private readonly IBookRepository _bookRepository;
             private readonly IUserRepository _userRepository;
-            //private INotificationRepostiory _notificationRepository;
+            private readonly INofiticationRepository _notificationRepository;
 
-            public Handler(IBookRepository bookRepository, IUserRepository userRepository)
+            public Handler(IBookRepository bookRepository, IUserRepository userRepository, INofiticationRepository nofiticationRepository)
             {
                 _bookRepository = bookRepository;
                 _userRepository = userRepository;
+                _notificationRepository = nofiticationRepository;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
@@ -67,6 +69,8 @@ namespace Library.API.CQRS.Commands.Books
                         spectator.SpectatedBookIds = "";
                     spectator.SpectatedBookIds = Regex.Replace(spectator.SpectatedBookIds, $"^({book.Id}),|,({book.Id}),|,({book.Id})$", "");
                 }
+
+                await _notificationRepository.SendNotificationStatus(book, cancellationToken);
 
                 await _bookRepository.UpdateBook(updatedBook, cancellationToken);
                 await _userRepository.UpdateUsers(bookSpectators, cancellationToken);
